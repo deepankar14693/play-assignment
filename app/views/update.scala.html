@@ -1,0 +1,53 @@
+@(user: Form[model.UserInformation])(implicit request:RequestHeader)
+@import helper._
+@main("Register yourself") {
+
+<form action="@routes.HomeController.storeUserData()" method="POST">
+    @CSRF.formField
+    <div class="form-group">
+        First Name :
+        <input type="text" class="form-control" name="fname">
+        <!--First Name :@user("fname").error.map{error => @error.message}-->
+        @user("fname").error.map{error => @error.message}
+    </div>
+    <div class="form-group">
+        Middle Name :
+        <input type="text" class="form-control" name="mname">
+        @user("mname").error.map{error => @error.message}
+    </div>
+    <div class="form-group">
+        Last Name :
+        <input type="text" class="form-control" name="lname">
+        @user("lname").error.map{error => @error.message}
+    </div>
+    <div class="form-group">
+        Username :
+        <input type="text" class="form-control" name="uname">
+        @user("uname").error.map{error => @error.message}
+    </div>
+    <div class="form-group">
+        Mobile Number :
+        <input type="number" minlength="10" maxlength="10" class="form-control" name="mobile">
+        @user("mobile").error.map{error => @error.message}
+    </div>
+    <div class="form-group">
+        Gender :
+        <input type="radio" name="gender" class="form-control" value="male"> Male<br>
+        <input type="radio" name="gender" class="form-control" value="female"> Female<br>
+        @user("gender").error.map{error => @error.message}
+    </div>
+    <div class="form-group">
+        Age :
+        <input type="number" min="18" max="75" class="form-control" name="age">
+        @user("age").error.map{error => @error.message}
+    </div>
+    <div class="form-group">
+        Select your interest : <br>
+        coding <input type="radio" name="hobby" class="form-control" value="coding"><br>
+        music <input type="radio" name="hobby" class="form-control" value="music"><br>
+        dance <input type="radio" name="hobby" class="form-control" value="dance"><br>
+        @user("hobby").error.map{error => @error.message}
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+</form>
+}

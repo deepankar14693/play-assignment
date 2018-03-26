@@ -1,0 +1,96 @@
+@(user: Form[model.UserInformation])(implicit request:RequestHeader)
+@import helper._
+@main("Register yourself") {
+@if(user.hasGlobalErrors)
+{
+<ul>
+    @for(error <- user.globalErrors) {
+    <li style="color: Red;">@Messages(error.messages, error.args)</li>
+    }
+</ul>
+}
+
+<form action="@routes.HomeController.storeUserData()" method="POST">
+    @CSRF.formField
+    <div class="form-group">
+        First Name :
+        <input type="text" class="form-control" name="fname">
+        <!--First Name :@user("fname").error.map{error => @error.message}-->
+        @user("fname").error.map{error => @error.message}
+    </div>
+    <div class="form-group">
+        Middle Name :
+        <input type="text" class="form-control" name="mname">
+        @user("mname").error.map{error => @error.message}
+    </div>
+    <div class="form-group">
+        Last Name :
+        <input type="text" class="form-control" name="lname">
+        @user("lname").error.map{error => @error.message}
+    </div>
+    <div class="form-group">
+        Username :
+        <input type="text" class="form-control" name="uname">
+        @user("uname").error.map{error => @error.message}
+    </div>
+    <div class="form-group">
+        Email :
+        <input type="email" class="form-control" name="email">
+        @user("email").error.map{error => @error.message}
+    </div>
+    <div class="form-group">
+        Password :
+        <input type="text" class="form-control" name="pass">
+        @user("pass").error.map{error => @error.message}
+    </div>
+    <div class="form-group">
+        Confirm Password :
+        <input type="text" class="form-control" name="cpass">
+        @user("cpass").error.map{error => @error.message}
+    </div>
+    <div class="form-group">
+        Mobile Number :
+        <input type="number" minlength="10" maxlength="10" class="form-control" name="mobile">
+        @user("mobile").error.map{error => @error.message}
+    </div>
+    <div class="form-group">
+        Gender :
+        <input type="radio" name="gender" class="form-control" value="male"> Male<br>
+        <input type="radio" name="gender" class="form-control" value="female"> Female<br>
+        @user("gender").error.map{error => @error.message}
+    </div>
+    <div class="form-group">
+        Age :
+        <input type="number" min="18" max="75" class="form-control" name="age">
+        @user("age").error.map{error => @error.message}
+    </div>
+    <div class="form-group">
+        Select your interest : <br>
+       coding <input type="radio" name="hobby" class="form-control" value="coding"><br>
+       music <input type="radio" name="hobby" class="form-control" value="music"><br>
+        dance <input type="radio" name="hobby" class="form-control" value="dance"><br>
+        @user("hobby").error.map{error => @error.message}
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+</form>
+}
+
+<!--<form align="center" action="@routes.HomeController.storeUserData()" method="POST">-->
+    <!--@CSRF.formField-->
+    <!--enter first name : <input type="text" name="fname"/><br><br>-->
+    <!--enter middle name : <input type="text" name="mname"/><br><br>-->
+    <!--enter last name : <input type="text" name="lname"/><br><br>-->
+    <!--enter username : <input type="text" name="uname"/><br><br>-->
+    <!--enter email : <input type="text" name="email"/><br><br>-->
+    <!--enter password : <input type="text" name="pass"/><br><br>-->
+    <!--confirm password : <input type="text" name="cpass"/><br><br>-->
+    <!--mobile number : <input type="number" minlength="10" maxlength="10" name="mobile"/><br><br>-->
+    <!--<input type="radio" name="gender" value="male"> Male<br>-->
+    <!--<input type="radio" name="gender" value="female"> Female<br><br>-->
+    <!--age : <input type="number" min="18" max="75" name="age"/><br><br>-->
+    <!--select your interests<br><br>-->
+    <!--<input type="checkbox" id="coding" name="interest" value="coding"><br><br>-->
+    <!--<input type="checkbox" id="music" name="interest" value="music"><br><br>-->
+    <!--<input type="checkbox" id="dance" name="interest" value="dance"><br><br>-->
+    <!--<input type="submit" value="register"/>-->
+<!--</form>-->
