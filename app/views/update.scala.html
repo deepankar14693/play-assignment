@@ -1,8 +1,14 @@
-@(user: Form[model.UserInformation])(implicit request:RequestHeader)
+@(user: Form[model.UserUpdateForm])(implicit flash: Flash,request: RequestHeader)
 @import helper._
-@main("Register yourself") {
+@main("Update") {
 
-<form action="@routes.HomeController.storeUserData()" method="POST">
+@if(user.hasGlobalErrors) {
+<p>
+    @user.globalError.map{ error => @error.message}
+</p>
+}
+
+<form action="@routes.HomeController.updateUserData()" method="POST">
     @CSRF.formField
     <div class="form-group">
         First Name :

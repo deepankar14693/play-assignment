@@ -26,7 +26,12 @@ trait UserProfileRepository extends HasDatabaseConfigProvider[JdbcProfile] {
 
  import profile.api._
 
+ val userProfileQuery: TableQuery[UserTable] = TableQuery[UserTable]
+
  class UserTable(tag: Tag) extends Table[UserInfo](tag, "users") {
+
+  def * : ProvenShape[UserInfo] = (id, fname, mname, lname, uname, email, pass, cpass, mobile,
+   gender, age, hobby) <> (UserInfo.tupled, UserInfo.unapply)
 
   def id: Rep[Int] = column[Int]("u_id", O.PrimaryKey, O.AutoInc)
 
@@ -51,11 +56,7 @@ trait UserProfileRepository extends HasDatabaseConfigProvider[JdbcProfile] {
   def age: Rep[Int] = column[Int]("u_age")
 
   def hobby: Rep[String] = column[String]("u_hobby")
-
-  def * : ProvenShape[UserInfo] = (id, fname, mname, lname, uname, email, pass, cpass, mobile,
-   gender, age, hobby) <> (UserInfo.tupled, UserInfo.unapply)
  }
- val userProfileQuery: TableQuery[UserTable] = TableQuery[UserTable]
 
 }
 
@@ -73,8 +74,34 @@ trait UserRepository {
   db.run(queryResult)
  }
 
+ def updateProfile(email: String, updatedUserData: UserUpdateForm): Future[Boolean] = {
+  db.run(userProfileQuery.filter(user => user.email === email).map(
+   user => (user.fname, user.mname, user.lname, user.mobile, user.gender, user.age, user.hobby))
+   .update(
+    updatedUserData.fname, updatedUserData.mname, updatedUserData.lname, updatedUserData.mobile
+    , updatedUserData.gender, updatedUserData.age, updatedUserData.hobby))
+   .map(_ > 0)
+ }
+
+ def validateUser(email: String, pass: String): Future[Boolean] = {
+  db.run(userProfileQuery.filter(user => user.email === email && user.pass === pass).result
+   .map(result => result.nonEmpty))
+ }
+
+ def userExist(email: String): Future[Boolean] = {
+  db.run(userProfileQuery.filter(user => user.email === email).result
+   .map(res => res.nonEmpty))
+ }
+
+ def changePassword(email: String, updatePassword: ChangePassword): Future[Boolean] = {
+  db.run(userProfileQuery.filter(user => user.email === email).map(
+   user => (user.pass,user.cpass))
+   .update(updatePassword.pass,updatePassword.cpass))
+   .map(_ > 0)
+ }
+
 }
 
 
-class UserProfileImplementation @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
- extends UserProfileRepository with UserRepository
+ class UserProfileImplementation @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
+  extends UserProfileRepository with UserRepository

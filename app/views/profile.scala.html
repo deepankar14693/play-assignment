@@ -1,5 +1,13 @@
-@(username: String)(implicit flash: Flash,request: RequestHeader)
+@()(implicit flash: Flash,request: RequestHeader)
+@import helper._
 @main("profile"){
+
+<div style="background-color: yellow;font-size: large">
+    <!--@request.session.get("Email")<br>-->
+    @flash.get("Success").getOrElse("welcome..!!!")
+    @flash.get("valid").getOrElse("Welcome............!!!!")
+</div>
+
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <ul class="nav navbar-nav">
@@ -9,8 +17,5 @@
         </ul>
     </div>
 </nav>
-<div style="background-color: yellow;font-size: large">
-@request.session.get("Email")<br>
-@flash.get("Success").getOrElse("welcome..!!!")
-</div>
+
 }

@@ -1,13 +1,11 @@
-@(user: Form[model.UserInformation])(implicit request:RequestHeader)
+@(user: Form[model.UserInformation])(implicit flash: Flash,request: RequestHeader)
 @import helper._
 @main("Register yourself") {
-@if(user.hasGlobalErrors)
-{
-<ul>
-    @for(error <- user.globalErrors) {
-    <li style="color: Red;">@Messages(error.messages, error.args)</li>
-    }
-</ul>
+
+@if(user.hasGlobalErrors) {
+<p>
+    @user.globalError.map{ error => @error.message}
+</p>
 }
 
 <form action="@routes.HomeController.storeUserData()" method="POST">
@@ -15,8 +13,7 @@
     <div class="form-group">
         First Name :
         <input type="text" class="form-control" name="fname">
-        <!--First Name :@user("fname").error.map{error => @error.message}-->
-        @user("fname").error.map{error => @error.message}
+                @user("fname").error.map{error => @error.message}
     </div>
     <div class="form-group">
         Middle Name :
@@ -75,22 +72,3 @@
 </form>
 }
 
-<!--<form align="center" action="@routes.HomeController.storeUserData()" method="POST">-->
-    <!--@CSRF.formField-->
-    <!--enter first name : <input type="text" name="fname"/><br><br>-->
-    <!--enter middle name : <input type="text" name="mname"/><br><br>-->
-    <!--enter last name : <input type="text" name="lname"/><br><br>-->
-    <!--enter username : <input type="text" name="uname"/><br><br>-->
-    <!--enter email : <input type="text" name="email"/><br><br>-->
-    <!--enter password : <input type="text" name="pass"/><br><br>-->
-    <!--confirm password : <input type="text" name="cpass"/><br><br>-->
-    <!--mobile number : <input type="number" minlength="10" maxlength="10" name="mobile"/><br><br>-->
-    <!--<input type="radio" name="gender" value="male"> Male<br>-->
-    <!--<input type="radio" name="gender" value="female"> Female<br><br>-->
-    <!--age : <input type="number" min="18" max="75" name="age"/><br><br>-->
-    <!--select your interests<br><br>-->
-    <!--<input type="checkbox" id="coding" name="interest" value="coding"><br><br>-->
-    <!--<input type="checkbox" id="music" name="interest" value="music"><br><br>-->
-    <!--<input type="checkbox" id="dance" name="interest" value="dance"><br><br>-->
-    <!--<input type="submit" value="register"/>-->
-<!--</form>-->
