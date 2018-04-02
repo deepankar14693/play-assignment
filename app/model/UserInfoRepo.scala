@@ -20,7 +20,7 @@ import scala.concurrent.Future
 // }
 case class UserInfo(id: Int, fname: String, mname: String, lname: String, uname: String,
                     email: String, pass: String, cpass: String, mobile: String,
-                    gender: String, age: Int, hobby: String)
+                    gender: String, age: Int, hobby: String, isEnable: Boolean)
 
 trait UserProfileRepository extends HasDatabaseConfigProvider[JdbcProfile] {
 
@@ -31,7 +31,7 @@ trait UserProfileRepository extends HasDatabaseConfigProvider[JdbcProfile] {
  class UserTable(tag: Tag) extends Table[UserInfo](tag, "users") {
 
   def * : ProvenShape[UserInfo] = (id, fname, mname, lname, uname, email, pass, cpass, mobile,
-   gender, age, hobby) <> (UserInfo.tupled, UserInfo.unapply)
+   gender, age, hobby, isEnable) <> (UserInfo.tupled, UserInfo.unapply)
 
   def id: Rep[Int] = column[Int]("u_id", O.PrimaryKey, O.AutoInc)
 
@@ -56,6 +56,8 @@ trait UserProfileRepository extends HasDatabaseConfigProvider[JdbcProfile] {
   def age: Rep[Int] = column[Int]("u_age")
 
   def hobby: Rep[String] = column[String]("u_hobby")
+
+  def isEnable: Rep[Boolean] = column[Boolean]("u_enable")
  }
 
 }
@@ -84,8 +86,15 @@ trait UserRepository {
  }
 
  def validateUser(email: String, pass: String): Future[Boolean] = {
-  db.run(userProfileQuery.filter(user => user.email === email && user.pass === pass).result
+  db.run(userProfileQuery.filter(user => user.email === email && user.pass === pass && user.isEnable === true).result
    .map(result => result.nonEmpty))
+ }
+
+ def validateAdmin(email: String,pass: String): Future[Boolean] = Future{
+ if (email == "deepankar.ranswal@knoldus.in" && pass == "007"){
+   true
+ }
+ else false
  }
 
  def userExist(email: String): Future[Boolean] = {
@@ -99,6 +108,16 @@ trait UserRepository {
    .update(updatePassword.pass,updatePassword.cpass))
    .map(_ > 0)
  }
+
+ def userCollections: Future[List[UserInfo]] = {
+  db.run(userProfileQuery.to[List].result)
+ }
+
+ def userEnableAndDisable(id: Int,enable: Boolean): Future[Boolean] = {
+  db.run(userProfileQuery.filter(user => user.id === id).map(user => user.isEnable)
+   .update(enable)).map(_ > 0)
+ }
+
 
 }
 

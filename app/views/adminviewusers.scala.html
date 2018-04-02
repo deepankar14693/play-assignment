@@ -1,0 +1,43 @@
+@(usersList: List[model.UserInfo])(implicit flash: Flash,request: RequestHeader)
+@import helper._
+@main("viewUsers"){
+
+<li><a href="@routes.AdminController.updateAdminProfile()">Profile</a></li><br>
+<li><a href="@routes.AdminController.addTest()">Add Assignments</a></li><br>
+<li><a href="@routes.AdminController.viewTests()">View Assignments</a></li><br>
+<li><a href="@routes.AdminController.viewUsers()">View Users</a></li><br>
+<li><a href="@routes.HomeController.logoutUser()">LOGOUT</a></li><br>
+
+
+<center><h1>USERS LIST  --------</h1></center><br><br>
+<div class="container">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>FIRST NAME</th>
+            <th>LASTNAME</th>
+            <th>USERNAME</th>
+            <th>EMAIL</th>
+            <th>STATUS</th>
+            <th>ACTION</th>
+        </tr>
+        </thead>
+        @for(userRecord <- usersList){
+        <tbody>
+        <tr class="active">
+            <td>@userRecord.fname</td>
+            <td>@userRecord.lname</td>
+            <td>@userRecord.uname</td>
+            <td>@userRecord.email</td>
+            <td>@userRecord.isEnable</td>
+            <td>
+                <a type="button" href="@routes.AdminController.enableUser(userRecord.id,userRecord.isEnable)">enable</a>
+                <a type="button" href="@routes.AdminController.disableUser(userRecord.id,userRecord.isEnable)">disable</a>
+            </td>
+        </tr>
+        </tbody>
+        }
+    </table>
+</div>
+
+}

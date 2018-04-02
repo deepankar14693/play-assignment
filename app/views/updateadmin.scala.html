@@ -1,0 +1,66 @@
+@(admin: Form[model.UserUpdateForm])(implicit flash: Flash,request: RequestHeader)
+@import helper._
+@main("UpdateAdmin") {
+
+@if(admin.hasGlobalErrors) {
+<p>
+    @admin.globalError.map{ error => @error.message}
+</p>
+}
+
+<li><a href="@routes.AdminController.updateAdminProfile()">Profile</a></li><br>
+<li><a href="@routes.AdminController.addTest()">Add Assignments</a></li><br>
+<li><a href="@routes.AdminController.viewTests()">View Assignments</a></li><br>
+<li><a href="@routes.AdminController.viewUsers()">View Users</a></li><br>
+<li><a href="@routes.HomeController.logoutUser()">LOGOUT</a></li><br>
+
+<center><h1>UPDATE PROFILE</h1></center>
+
+<form action="@routes.AdminController.updateAdminData()" method="POST">
+    @CSRF.formField
+    <div class="form-group col-md-6">
+        First Name :
+        <input type="text" class="form-control" name="fname">
+               @admin("fname").error.map{error => @error.message}
+    </div>
+    <div class="form-group col-md-6">
+        Middle Name :
+        <input type="text" class="form-control" name="mname">
+        @admin("mname").error.map{error => @error.message}
+    </div>
+    <div class="form-group col-md-6">
+        Last Name :
+        <input type="text" class="form-control" name="lname">
+        @admin("lname").error.map{error => @error.message}
+    </div>
+    <div class="form-group col-md-6">
+        Username :
+        <input type="text" class="form-control" name="uname">
+        @admin("uname").error.map{error => @error.message}
+    </div>
+    <div class="form-group col-md-6">
+        Mobile Number :
+        <input type="number" minlength="10" maxlength="10" class="form-control" name="mobile">
+        @admin("mobile").error.map{error => @error.message}
+    </div>
+    <div class="form-group col-md-6">
+        Gender :<br>
+        <input type="radio" name="gender" value="male"> Male
+        <input type="radio" name="gender" value="female"> Female<br>
+        @admin("gender").error.map{error => @error.message}
+    </div>
+    <div class="form-group col-md-6">
+        Age :
+        <input type="number" min="18" max="75" class="form-control" name="age">
+        @admin("age").error.map{error => @error.message}
+    </div>
+    <div class="form-group col-md-6">
+        Select your interest : <br>
+        <input type="radio" name="hobby" value="coding">coding
+        <input type="radio" name="hobby" value="music">music
+        <input type="radio" name="hobby" value="dance">dance<br>
+        @admin("hobby").error.map{error => @error.message}
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+</form>
+}

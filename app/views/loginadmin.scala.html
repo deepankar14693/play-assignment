@@ -1,33 +1,32 @@
-@(user: Form[model.LoginUser])(implicit flash: Flash,request: RequestHeader)
+@(admin: Form[model.LoginAdmin])(implicit flash: Flash,request: RequestHeader)
 @import helper._
 @main("userLogin"){
 
-@if(user.hasGlobalErrors) {
+@if(admin.hasGlobalErrors) {
 <p>
-    @user.globalError.map{ error => @error.message}
+    @admin.globalError.map{ error => @error.message}
 </p>
 }
 
 <div style="background-color: yellow;font-size: large">
     <!--@request.session.get("Email")<br>-->
     <!--@flash.get("Success").getOrElse("welcome..!!!")-->
-    <h1> @flash.get("invalid").getOrElse("Welcome............!!!!")</h1>
+    <h1>@flash.get("invalidadmin").getOrElse("")</h1>
 </div>
 
-<center><h1>USER LOGIN</h1></center>
+<center><h1>ADMIN LOGIN</h1></center>
 
-<form action="@routes.HomeController.userLogin()" method="POST">
+<form action="@routes.AdminController.loginAdmin()" method="POST">
     @CSRF.formField
     <div class="form-group col-md-6">
         Email :
         <input type="email" class="form-control" name="email">
-        <!--First Name :@user("fname").error.map{error => @error.message}-->
-        @user("email").error.map{error => @error.message}
+                @admin("email").error.map{error => @error.message}
     </div>
     <div class="form-group col-md-6">
         Password :
         <input type="text" class="form-control" name="pass">
-        @user("pass").error.map{error => @error.message}
+        @admin("pass").error.map{error => @error.message}
     </div>
     <button type="submit" class="btn btn-default">Login</button>
     <a href="@routes.HomeController.forgot()">FORGOT PASSWORD</a>

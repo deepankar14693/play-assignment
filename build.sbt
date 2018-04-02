@@ -7,6 +7,9 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 scalaVersion := "2.12.3"
 
+javaOptions in Test += "-Dconfig.file=conf/test.conf"
+
+
 libraryDependencies ++= Seq(guice, ehcache,
  "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % Test,
  "com.typesafe.play" % "play-slick_2.12" % "3.0.0",

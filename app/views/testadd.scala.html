@@ -1,0 +1,29 @@
+@(admin: Form[model.AddAssignment])(implicit flash: Flash,request: RequestHeader)
+@import helper._
+@main("addTest"){
+
+<li><a href="@routes.AdminController.updateAdminProfile()">Profile</a></li><br>
+<li><a href="@routes.AdminController.addTest()">Add Assignments</a></li><br>
+<li><a href="@routes.AdminController.viewTests()">View Assignments</a></li><br>
+<li><a href="@routes.AdminController.viewUsers()">View Users</a></li><br>
+<li><a href="@routes.HomeController.logoutUser()">LOGOUT</a></li><br>
+
+
+<center><h1>Add Assignments</h1></center>
+
+<form action="@routes.AdminController.addAssignment()" method="POST">
+    @CSRF.formField
+    <div class="form-group col-md-6">
+        Assignment Title :
+        <input type="text" class="form-control" name="title">
+        @admin("title").error.map{error => @error.message}
+    </div>
+    <div class="form-group col-md-6">
+        Assignment Description :
+        <input type="text" class="form-control" name="description">
+        @admin("description").error.map{error => @error.message}
+    </div>
+    <button type="submit" class="btn btn-default">ADD</button>
+</form>
+
+}

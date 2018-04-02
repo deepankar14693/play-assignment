@@ -2,10 +2,13 @@
 @import helper._
 @main("Welcome to Play") {
 <div>
-@flash.get("complete").getOrElse("welcome..!!!")
+@flash.get("complete").getOrElse("")
+    @flash.get("userLogout").getOrElse("")
 </div>
-    <h1 style="background color: red">Welcome to ASSIGNMENTS!</h1><br><br><br>
-<a href="@routes.HomeController.login()">LOGIN USER</a><br><br>
-<a href="#">LOGIN ADMIN</a><br><br>
-<a href="@routes.HomeController.register()">SIGN UP</a><br><br>
+<div class="container">
+    <center><h1 style="color:red">Welcome to ASSIGNMENTS!</h1></center><br><br><br><br>
+    <a href="@routes.HomeController.login()"><h2>LOGIN USER</h2></a><br><br><br><br><br>
+    <a href="@routes.AdminController.adminLogin()"><h2>LOGIN ADMIN</h2></a><br><br><br><br><br>
+    <a href="@routes.HomeController.register()"><h2>SIGN UP</h2></a><br><br>
+</div>
 }

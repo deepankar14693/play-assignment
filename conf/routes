@@ -4,17 +4,31 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /                           controllers.HomeController.index
-GET     /register                            controllers.HomeController.register
-GET     /login                            controllers.HomeController.login
-GET     /updateprofile                       controllers.HomeController.updateProfile
-POST    /storeUserData                         controllers.HomeController.storeUserData
+GET     /                                  controllers.HomeController.index
+GET     /register                          controllers.HomeController.register
+GET     /login                             controllers.HomeController.login
+GET     /updateprofile                     controllers.HomeController.updateProfile
+POST    /storeUserData                     controllers.HomeController.storeUserData
 POST    /loginUser                         controllers.HomeController.userLogin
-GET     /profile                        controllers.HomeController.profile
-POST    /update                         controllers.HomeController.updateUserData
-GET     /forgot                        controllers.HomeController.forgot
-POST    /emailForgot                         controllers.HomeController.emailForgot
-GET    /passwordUpdate                         controllers.HomeController.updatePassword
-POST    /passwordChange                         controllers.HomeController.changePassword
+GET     /profile                           controllers.HomeController.profile
+POST    /update                            controllers.HomeController.updateUserData
+GET     /forgot                            controllers.HomeController.forgot
+POST    /emailForgot                       controllers.HomeController.emailForgot
+GET    /passwordUpdate                     controllers.HomeController.updatePassword
+POST    /passwordChange                    controllers.HomeController.changePassword
+GET    /admin                              controllers.AdminController.adminLogin
+POST   /adminLogin                         controllers.AdminController.loginAdmin
+GET    /profileAdmin                       controllers.AdminController.adminProfile
+GET     /userLogout                        controllers.HomeController.logoutUser
+GET     /testAdd                           controllers.AdminController.addTest
+POST   /assignmentAdd                      controllers.AdminController.addAssignment
+GET     /testView                          controllers.AdminController.viewTests
+GET     /deleteAssignment                  controllers.AdminController.deleteAssignment(id: Int)
+GET     /viewusers                         controllers.AdminController.viewUsers
+GET     /enableuser                        controllers.AdminController.enableUser(id: Int,enable: Boolean)
+GET     /disableuser                       controllers.AdminController.disableUser(id: Int,enable: Boolean)
+GET     /userviewtests                     controllers.AdminController.userViewTests
+GET     /updateadminprofile                controllers.AdminController.updateAdminProfile
+POST     /updateadmindata                   controllers.AdminController.updateAdminData
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

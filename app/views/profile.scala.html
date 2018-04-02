@@ -4,16 +4,16 @@
 
 <div style="background-color: yellow;font-size: large">
     <!--@request.session.get("Email")<br>-->
-    @flash.get("Success").getOrElse("welcome..!!!")
-    @flash.get("valid").getOrElse("Welcome............!!!!")
+    <h3> @flash.get("Success").getOrElse("welcome..!!!")</h3>
+    <h3>@flash.get("valid").getOrElse("Welcome............!!!!")</h3>
 </div>
 
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <ul class="nav navbar-nav">
             <li><a href="@routes.HomeController.updateProfile()">Profile</a></li><br><br>
-            <li><a href="#">Assignments</a></li><br><br>
-            <li><a href="#">LOGOUT</a></li><br><br>
+            <li><a href="@routes.AdminController.userViewTests()">Assignments</a></li><br><br>
+            <li><a href="@routes.HomeController.logoutUser()">LOGOUT</a></li><br><br>
         </ul>
     </div>
 </nav>

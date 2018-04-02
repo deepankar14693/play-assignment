@@ -1,0 +1,26 @@
+@()(implicit flash: Flash,request: RequestHeader)
+@import helper._
+@main("userLogin"){
+<div style="background-color: yellow;font-size: large">
+   <h5> @request.session.get("admin")</h5><br>
+    <h5>@flash.get("admin").getOrElse("welcome..!!!")</h5>
+    <h5>@flash.get("added").getOrElse("")</h5>
+    <h5>@flash.get("addFailed").getOrElse("")</h5>
+    <h5>@flash.get("SuccessUpdate").getOrElse("")</h5>
+    <h5>@flash.get("SuccessFailure").getOrElse("")</h5>
+    <!--@flash.get("invalidadmin").getOrElse("")-->
+</div>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav">
+            <li><a href="@routes.AdminController.updateAdminProfile()"><h2>Profile</h2></a></li><br><br><br>
+            <li><a href="@routes.AdminController.addTest()"><h2>Add Assignments</h2></a></li><br><br><br>
+            <li><a href="@routes.AdminController.viewTests()"><h2>View Assignments</h2></a></li><br><br><br>
+            <li><a href="@routes.AdminController.viewUsers()"><h2>View Users</h2></a></li><br><br><br>
+            <li><a href="@routes.HomeController.logoutUser()"><h2>LOGOUT</h2></a></li><br><br>
+        </ul>
+    </div>
+</nav>
+
+}

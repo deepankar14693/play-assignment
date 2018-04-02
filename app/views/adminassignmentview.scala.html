@@ -1,0 +1,35 @@
+@(assignmentList: List[model.Assignment])(implicit flash: Flash,request: RequestHeader)
+@import helper._
+@main("viewAssignments"){
+
+<li><a href="@routes.AdminController.updateAdminProfile()">Profile</a></li><br>
+<li><a href="@routes.AdminController.addTest()">Add Assignments</a></li><br>
+<li><a href="@routes.AdminController.viewTests()">View Assignments</a></li><br>
+<li><a href="@routes.AdminController.viewUsers()">View Users</a></li><br>
+<li><a href="@routes.HomeController.logoutUser()">LOGOUT</a></li><br>
+
+
+<center><h1>ASSIGNMENTS LIST  --------</h1></center><br><br>
+<div class="container">
+<table class="table">
+    <thead>
+    <tr>
+        <th>TITLE</th>
+        <th>DESCRIPTION</th>
+        <th>ACTION</th></tr>
+    </thead>
+    @for(assignmentRecord <- assignmentList){
+    <tbody>
+    <tr class="active">
+        <td>@assignmentRecord.title</td>
+        <td>@assignmentRecord.desc</td>
+        <td><a type="button" href="@routes.AdminController.deleteAssignment(assignmentRecord.id)">
+            delete
+        </a></td>
+    </tr>
+    </tbody>
+    }
+</table>
+</div>
+
+}

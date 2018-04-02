@@ -6,7 +6,7 @@ import model._
 import play.api._
 import play.api.data.Form
 import play.api.mvc._
-import play.api.i18n._
+import play.api.i18n.I18nSupport
 
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -16,7 +16,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
   * application's home page.
   */
 @Singleton
-class HomeController @Inject()(userForm: UserForm, userInfo: UserProfileImplementation, cc: ControllerComponents) extends AbstractController(cc) {
+class HomeController @Inject()(userForm: UserForm, userInfo: UserProfileImplementation,
+                               cc: ControllerComponents) extends AbstractController(cc) {
 
  /**
    * Create an Action to render an HTML page.
@@ -43,10 +44,13 @@ class HomeController @Inject()(userForm: UserForm, userInfo: UserProfileImplemen
    * @return action for redirecting user to login template
    */
  def login() = Action { implicit request: Request[AnyContent] =>
-  //  Ok(views.html.signup(userForm.userInfoForm))
-  Ok(views.html.loginuser(userForm.userLoginForm))
+    Ok(views.html.loginuser(userForm.userLoginForm))
  }
 
+ def logoutUser() = Action { implicit request: Request[AnyContent] =>
+   Ok(views.html.index())
+   .flashing("userLogout" -> "you are successfully logged out...!!!!")
+ }
  /**
    * for authenticating user and redirecting to user profile page
    *
@@ -61,6 +65,7 @@ class HomeController @Inject()(userForm: UserForm, userInfo: UserProfileImplemen
     val result = userInfo.validateUser(data.email, data.pass)
     result.map {
      case true => Redirect(routes.HomeController.profile())
+       .withSession("userEmail" -> data.email)
       .flashing("valid" -> s"succesfully logged in")
      case false => Redirect(routes.HomeController.login())
       .flashing("invalid" -> s"invalid credentials try again")
@@ -70,7 +75,7 @@ class HomeController @Inject()(userForm: UserForm, userInfo: UserProfileImplemen
  }
 
  def updateProfile(): Action[AnyContent] = Action.async { implicit request =>
-  val email = request.session.get("Email").get
+  val email = request.session.get("userEmail").get
   val userData = userInfo.fetchByEmail(email)
   userData.map {
    case Some(y) =>
@@ -84,7 +89,7 @@ class HomeController @Inject()(userForm: UserForm, userInfo: UserProfileImplemen
  }
 
  def updateUserData(): Action[AnyContent] = Action.async { implicit request =>
-  val email = request.session.get("Email").get
+  val email = request.session.get("userEmail").get
   userForm.userUpdateForm.bindFromRequest().fold(
    formWithError => {
     Future.successful(BadRequest(views.html.update(formWithError)))
@@ -94,9 +99,9 @@ class HomeController @Inject()(userForm: UserForm, userInfo: UserProfileImplemen
      data.gender, data.age, data.hobby)
     val result = userInfo.updateProfile(email, record)
     result.map {
-     case true => Redirect(routes.HomeController.profile)
+     case true => Redirect(routes.HomeController.profile())
       .flashing("Success" -> s"details for ${data.uname} has been updated")
-     case false => Redirect(routes.HomeController.profile)
+     case false => Redirect(routes.HomeController.profile())
       .flashing("Success" -> s"details for ${data.uname} has not been updated due to some server error")
     }
    }
@@ -162,7 +167,7 @@ userForm.passwordChange.bindFromRequest().fold(
      optionalRecord =>
       optionalRecord.fold {
        val record = UserInfo(0, data.fname, data.mname, data.lname, data.uname, data.email,
-        data.pass, data.cpass, data.mobile, data.gender, data.age, data.hobby)
+        data.pass, data.cpass, data.mobile, data.gender, data.age, data.hobby,true)
        val result = userInfo.store(record)
        result.map {
         case true => Redirect(routes.HomeController.profile())
