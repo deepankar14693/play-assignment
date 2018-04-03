@@ -15,11 +15,11 @@ class AdminController @Inject()(userInfo: UserProfileImplementation,adminForm: A
                                 userForm: UserForm)
  extends AbstractController(cc) {
 
- def adminLogin() = Action { implicit request: Request[AnyContent] =>
+ def adminLogin(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
   Ok(views.html.loginadmin(adminForm.adminLoginForm))
  }
 
- def adminProfile() = Action { implicit request: Request[AnyContent] =>
+ def adminProfile(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
   Ok(views.html.adminprofile())
  }
 
@@ -75,7 +75,7 @@ class AdminController @Inject()(userInfo: UserProfileImplementation,adminForm: A
   )
  }
 
- def addTest() = Action { implicit request: Request[AnyContent] =>
+ def addTest(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
   Ok(views.html.testadd(adminForm.addAssignmentForm))
  }
 

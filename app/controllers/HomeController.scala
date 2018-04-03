@@ -26,7 +26,7 @@ class HomeController @Inject()(userForm: UserForm, userInfo: UserProfileImplemen
    * will be called when the application receives a `GET` request with
    * a path of `/`.
    */
- def index() = Action { implicit request: Request[AnyContent] =>
+ def index(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
   Ok(views.html.index())
  }
 
@@ -43,11 +43,11 @@ class HomeController @Inject()(userForm: UserForm, userInfo: UserProfileImplemen
    *
    * @return action for redirecting user to login template
    */
- def login() = Action { implicit request: Request[AnyContent] =>
+ def login(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.loginuser(userForm.userLoginForm))
  }
 
- def logoutUser() = Action { implicit request: Request[AnyContent] =>
+ def logoutUser(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
    Ok(views.html.index())
    .flashing("userLogout" -> "you are successfully logged out...!!!!")
  }
@@ -108,11 +108,11 @@ class HomeController @Inject()(userForm: UserForm, userInfo: UserProfileImplemen
   )
  }
 
- def profile() = Action { implicit request: Request[AnyContent] =>
+ def profile(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
   Ok(views.html.profile())
  }
 
- def forgot() = Action { implicit request: Request[AnyContent] =>
+ def forgot(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
   Ok(views.html.forgotemail(userForm.forgotEmailForm))
  }
 
@@ -128,10 +128,10 @@ class HomeController @Inject()(userForm: UserForm, userInfo: UserProfileImplemen
    data => {
     val result = userInfo.userExist(data.email)
     result.map {
-     case true => Redirect(routes.HomeController.updatePassword)
+     case true => Redirect(routes.HomeController.updatePassword())
     .withSession("EmailAuthenticated" -> data.email)
       .flashing("change" -> "correct email now you change your password")
-     case false => Redirect(routes.HomeController.forgot)
+     case false => Redirect(routes.HomeController.forgot())
       .flashing("unchanged" -> "email didn't matched our database please try again")
     }
    }
@@ -172,7 +172,7 @@ userForm.passwordChange.bindFromRequest().fold(
        result.map {
         case true => Redirect(routes.HomeController.profile())
          .withSession("Name" -> data.uname, "Email" -> data.email)
-         .flashing("Success" -> s"welcome ${data.uname} keep calm assignments coming soon")
+         .flashing("Success" -> s"welcome ${data.uname}")
         case false => Logger.info("oops ..... something went wrong..!!!!!")
          Redirect(routes.HomeController.index())
        }

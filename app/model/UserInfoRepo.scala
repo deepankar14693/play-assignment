@@ -90,11 +90,11 @@ trait UserRepository {
    .map(result => result.nonEmpty))
  }
 
- def validateAdmin(email: String,pass: String): Future[Boolean] = Future{
- if (email == "deepankar.ranswal@knoldus.in" && pass == "007"){
+ def validateAdmin(email: String, pass: String): Future[Boolean] = Future {
+  if (email == "deepankar.ranswal@knoldus.in" && pass == "007") {
    true
- }
- else false
+  }
+  else {false}
  }
 
  def userExist(email: String): Future[Boolean] = {
@@ -104,8 +104,8 @@ trait UserRepository {
 
  def changePassword(email: String, updatePassword: ChangePassword): Future[Boolean] = {
   db.run(userProfileQuery.filter(user => user.email === email).map(
-   user => (user.pass,user.cpass))
-   .update(updatePassword.pass,updatePassword.cpass))
+   user => (user.pass, user.cpass))
+   .update(updatePassword.pass, updatePassword.cpass))
    .map(_ > 0)
  }
 
@@ -113,7 +113,7 @@ trait UserRepository {
   db.run(userProfileQuery.to[List].result)
  }
 
- def userEnableAndDisable(id: Int,enable: Boolean): Future[Boolean] = {
+ def userEnableAndDisable(id: Int, enable: Boolean): Future[Boolean] = {
   db.run(userProfileQuery.filter(user => user.id === id).map(user => user.isEnable)
    .update(enable)).map(_ > 0)
  }
@@ -122,5 +122,5 @@ trait UserRepository {
 }
 
 
- class UserProfileImplementation @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
-  extends UserProfileRepository with UserRepository
+class UserProfileImplementation @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
+ extends UserProfileRepository with UserRepository
